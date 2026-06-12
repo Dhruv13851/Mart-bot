@@ -1,0 +1,14 @@
+venv/
+.venv/
+.env
+__pycache__/
+*.pyc
+.DS_Store
+
+vector_db/
+data/
+
+config/settings.py
+config/llm.py
+
+*.wav
