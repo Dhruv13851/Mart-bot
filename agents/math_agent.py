@@ -13,10 +13,9 @@ from prompts.math_agent_prompt import (
     SYSTEM_PROMPT
 )
 
-from tools.calculator_tool import (
+from tools.sympy_tool import (
     math_solver
 )
-
 
 class MathAgent:
 
@@ -30,18 +29,9 @@ class MathAgent:
 
         prompt = ChatPromptTemplate.from_messages(
             [
-                (
-                    "system",
-                    SYSTEM_PROMPT
-                ),
-                (
-                    "human",
-                    "{input}"
-                ),
-                (
-                    "placeholder",
-                    "{agent_scratchpad}"
-                )
+                ("system", SYSTEM_PROMPT),
+                ("human", "{input}"),
+                ("placeholder", "{agent_scratchpad}")
             ]
         )
 
@@ -54,7 +44,7 @@ class MathAgent:
         self.executor = AgentExecutor(
             agent=agent,
             tools=self.tools,
-            verbose=True,
+            verbose=False,
             return_intermediate_steps=False
         )
 
@@ -70,3 +60,7 @@ class MathAgent:
         )
 
         return response["output"]
+
+    @property
+    def runnable(self):
+        return self.executor

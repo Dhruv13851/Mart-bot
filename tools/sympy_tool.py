@@ -1,28 +1,4 @@
-# from langchain.tools import tool
-# import sympy
 
-
-# @tool
-# def math_solver(expression: str) -> str:
-#     """
-# Use this tool to solve equations.
-
-# Do NOT solve equations yourself.
-
-# Your job is to translate word problems into equations and send them to the tool.
-
-# The tool is responsible for algebraic manipulation and solving.    """
-#     try:
-
-#         expr = sympy.sympify(expression)
-
-#         if expr.free_symbols:
-#             return "ERROR: Variables are not allowed."
-
-#         return str(float(expr.evalf()))
-
-#     except Exception as e:
-#         return f"ERROR: {e}"
 # from langchain.tools import tool
 # import sympy as sp
 # import string
@@ -67,10 +43,11 @@
 
 #     except Exception as e:
 #         return f"ERROR: {e}"
+
 from langchain.tools import tool
 import sympy as sp
 import string
-
+from sympy.parsing.sympy_parser import parse_expr
 
 @tool
 def math_solver(expression: str) -> str:
@@ -95,7 +72,8 @@ def math_solver(expression: str) -> str:
             "sqrt": sp.sqrt,
         }
 
-        result = eval(expression, {"__builtins__": {}}, local_dict)
+        # result = eval(expression, {"__builtins__": {}}, local_dict)
+        result = parse_expr(expression, local_dict=local_dict, evaluate=True)
 
         # ---------------------------
         # NORMALIZATION LAYER
@@ -113,8 +91,15 @@ def math_solver(expression: str) -> str:
         if hasattr(result, "evalf"):
             return str(result.evalf())
 
-        # case 4: fallback numeric
-        return str(result)
+        # ---------------------------
+        # STRUCTURED OUTPUT LAYER
+        # ---------------------------
+
+        response = {
+            "input": expression,
+            "output_str": str(result),
+            "type": type(result).__name__,
+        }
 
     except Exception as e:
         return f"ERROR: {e}"
