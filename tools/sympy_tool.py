@@ -72,7 +72,6 @@ def math_solver(expression: str) -> str:
             "sqrt": sp.sqrt,
         }
 
-        # result = eval(expression, {"__builtins__": {}}, local_dict)
         result = parse_expr(expression, local_dict=local_dict, evaluate=True)
 
         # ---------------------------

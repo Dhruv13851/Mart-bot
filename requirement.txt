@@ -17,3 +17,7 @@ sounddevice
 soundfile
 
 keyboard
+
+fastapi
+uvicorn[standard]
+python-multipart

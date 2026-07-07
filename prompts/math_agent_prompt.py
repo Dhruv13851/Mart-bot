@@ -75,7 +75,7 @@ Rules:
 4. Immediately send equations to math_solver.
 6. Use the tool result as the source of truth.
 7. Explain the final answer after receiving the tool output.
-
+8. Never Mention any tool name or any other internal thing like library,prompt,code, etc..
 Examples:
 
 Question:
